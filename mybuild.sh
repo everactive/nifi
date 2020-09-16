@@ -15,6 +15,6 @@ if [[ "$1" == "amqp" ]]; then
   cd nifi-nar-bundles/nifi-amqp-bundle
   mvn -T C2.0 clean install -Pinclude-grpc
   cd -
-  cp nifi-nar-bundles/nifi-amqp-bundle/nifi-amqp-nar/target/nifi-amqp-nar-1.13.0-SNAPSHOT.nar ./nifi-amqp-nar-1.13.0-everactive.nar
+  cp nifi-nar-bundles/nifi-amqp-bundle/nifi-amqp-nar/target/nifi-amqp-nar-1.13.0-SNAPSHOT.nar ./nifi-amqp-nar-1.12.0-everactive.nar
 fi
 
