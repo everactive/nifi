@@ -1,4 +1,12 @@
 #!/bin/bash
+#
+# syntax:
+# ea-build {rebuild|assembly|amqp}
+# 
+# rebuild: will build the entire Nifi project
+# assembly: will re-package the binary artifacts
+# amqp: will build our AMQP patch in a NAR file
+#
 
 export MAVEN_OPTS="-Xms1024m -Xmx3076m -XX:MaxPermSize=256m"
 if [[ "$1" == "rebuild" ]]; then
