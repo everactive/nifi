@@ -146,7 +146,8 @@ public class ConsumeAMQP extends AbstractAMQPProcessor<AMQPConsumer> {
             flowFile = session.write(flowFile, out -> out.write(response.getBody()));
 
             final BasicProperties amqpProperties = response.getProps();
-            final Map<String, String> attributes = buildAttributes(amqpProperties);
+            final String routingKey = response.getEnvelope().getRoutingKey();
+            final Map<String, String> attributes = buildAttributes(amqpProperties, routingKey);
             flowFile = session.putAllAttributes(flowFile, attributes);
 
             session.getProvenanceReporter().receive(flowFile, connection.toString() + "/" + context.getProperty(QUEUE).getValue());
@@ -160,7 +161,7 @@ public class ConsumeAMQP extends AbstractAMQPProcessor<AMQPConsumer> {
         }
     }
 
-    private Map<String, String> buildAttributes(final BasicProperties properties) {
+    private Map<String, String> buildAttributes(final BasicProperties properties, final String routingKey) {
         final Map<String, String> attributes = new HashMap<>();
         addAttribute(attributes, ATTRIBUTES_PREFIX + "appId", properties.getAppId());
         addAttribute(attributes, ATTRIBUTES_PREFIX + "contentEncoding", properties.getContentEncoding());
@@ -176,6 +177,7 @@ public class ConsumeAMQP extends AbstractAMQPProcessor<AMQPConsumer> {
         addAttribute(attributes, ATTRIBUTES_PREFIX + "type", properties.getType());
         addAttribute(attributes, ATTRIBUTES_PREFIX + "userId", properties.getUserId());
         addAttribute(attributes, ATTRIBUTES_PREFIX + "clusterId", properties.getClusterId());
+        addAttribute(attributes, ATTRIBUTES_PREFIX + "routingKey", routingKey != null ? routingKey : "");
         return attributes;
     }
 
